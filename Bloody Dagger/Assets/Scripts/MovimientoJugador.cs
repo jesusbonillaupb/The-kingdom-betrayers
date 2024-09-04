@@ -62,8 +62,9 @@ public class MovimientoJugador : MonoBehaviour
         {
             salto = true;
         }
+        
 
-        if(!enSuelo && enPared && inputX != 0)
+        if (!enSuelo && enPared && inputX != 0)
         {
             deslizando = true;
             suavizadoDeMovimiento = 0.3f;
@@ -78,6 +79,9 @@ public class MovimientoJugador : MonoBehaviour
         {
             StartCoroutine(Dash());
         }
+
+        
+
     }
 
     private void FixedUpdate()
@@ -157,6 +161,8 @@ public class MovimientoJugador : MonoBehaviour
         rb2D.velocity = new Vector2(rb2D.velocity.x, fuerzaDeSalto);
         tiempoEnElAire = 1f;
     }
+
+
 
     private void Girar()
     {
