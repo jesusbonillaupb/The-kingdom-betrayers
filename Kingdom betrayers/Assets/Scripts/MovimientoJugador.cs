@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using TMPro;
 using UnityEngine;
 
 public class MovimientoJugador : MonoBehaviour
@@ -15,8 +13,6 @@ public class MovimientoJugador : MonoBehaviour
     private float suavizadoDeMovimiento = 0f;
     private Vector3 velocidad = Vector3.zero;
     private bool mirandoDerecha = true;
-    private bool dasheando = false;
-    private bool atacando = false;
 
     [Header("Salto")]
     [SerializeField] private float fuerzaDeSalto;
@@ -48,8 +44,6 @@ public class MovimientoJugador : MonoBehaviour
     [Header("Animator")]
     private Animator animator;
 
-    [Header("Particulas")]
-    [SerializeField] private ParticleSystem particulas;
     private void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -72,7 +66,7 @@ public class MovimientoJugador : MonoBehaviour
 
         if (!enSuelo && enPared && inputX != 0)
         {
-            deslizando = false;
+            deslizando = true;
             suavizadoDeMovimiento = 0.3f;
         }
         else
@@ -84,19 +78,9 @@ public class MovimientoJugador : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.LeftShift) && puedeHacerDash && tiempoDeDash > cooldownDash)
         {
             StartCoroutine(Dash());
-
-        
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-
-            StartCoroutine(Atacar());
-            
         }
 
-
-
+        
 
     }
 
@@ -159,9 +143,6 @@ public class MovimientoJugador : MonoBehaviour
 
     private IEnumerator Dash()
     {
-        particulas.Play();
-        dasheando = true;
-        animator.SetBool("Dash", dasheando);
         sePuedeMover = false;
         puedeHacerDash = false;
         rb2D.gravityScale = 0;
@@ -171,34 +152,15 @@ public class MovimientoJugador : MonoBehaviour
         puedeHacerDash = true;
         rb2D.gravityScale = gravedadInicial;
         tiempoDeDash = 0;
-        dasheando = false;
-        animator.SetBool("Dash", dasheando);
     }
-
-    private IEnumerator Atacar()
-{
-    
-    
-    atacando = true;
-    animator.SetBool("estaAtacando", atacando);
-    
-    yield return new WaitForSeconds(0.15f); 
-    
-    atacando = false;
-    animator.SetBool("estaAtacando", atacando);
-    
-    
-}
 
 
     private void Salto()
     {
-        particulas.Play();
         enSuelo = false;
         rb2D.velocity = new Vector2(rb2D.velocity.x, fuerzaDeSalto);
         tiempoEnElAire = 1f;
     }
-
 
 
 
